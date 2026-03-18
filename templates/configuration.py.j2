@@ -1,6 +1,9 @@
 {{ ansible_managed | comment }}
 import json
 import os
+{{ netbox_config_module_imports | default('') }}
+
+{{ netbox_config_custom_functions | default('') }}
 
 {% if netbox_metrics_enabled %}
 if "prometheus_multiproc_dir" in os.environ:
