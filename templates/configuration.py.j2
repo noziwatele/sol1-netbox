@@ -104,7 +104,13 @@ METRICS_ENABLED = True
 {% endif %}
 
 {% for setting, value in _netbox_config.items() %}
-{%		if setting in netbox_config_keys_noformat %}
+{%      if setting == 'API_TOKEN_PEPPERS' %}
+{{ setting }} = {
+{%          for pepper_id, pepper_value in value.items() %}
+    {{ pepper_id | int }}: json.loads({{ pepper_value | to_json | to_json }}),
+{%          endfor %}
+}
+{%		elif setting in netbox_config_keys_noformat %}
 {{ setting }} = {{ value }}
 {%      elif value in [True, False] %}
 {{ setting }} = {{ 'True' if value else 'False' }}
